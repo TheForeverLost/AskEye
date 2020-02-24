@@ -17,7 +17,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@drawable/appbg"
+    android:backgroundTint="#000000"
+    android:backgroundTintMode="multiply"
     >
 
     <RelativeLayout
@@ -42,6 +44,11 @@
             android:layout_alignParentTop="true"
             android:background="@color/tfe_semi_transparent">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ae_logo"
+                android:padding="10dp"/>
         </androidx.appcompat.widget.Toolbar>
 
     </RelativeLayout>

@@ -54,6 +54,8 @@
                 android:imeOptions="actionSend"
                 android:inputType="text"
                 android:maxLines="1"
+                android:textColorHint="@color/tfe_semi_transparent"
+                android:textColor="@color/cardview_dark_background"
                 android:singleLine="true"/>
         <ImageButton
                 android:id="@+id/send_button"

@@ -3,7 +3,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/spacing"
+        android:padding="@dimen/spacing"
         android:background="@drawable/rectangle"
     >
 

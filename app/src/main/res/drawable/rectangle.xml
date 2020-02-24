@@ -10,8 +10,8 @@
         android:right="2dp"
         android:top="2dp" />
     <gradient
-        android:startColor="@color/tfe_color_primary_dark"
-        android:endColor="@color/tfe_color_primary"
+        android:startColor="#AADDFF"
+        android:endColor="#BBEEBB"
         android:type="linear"
         ></gradient>
     <corners android:radius="@dimen/spacing"/>
