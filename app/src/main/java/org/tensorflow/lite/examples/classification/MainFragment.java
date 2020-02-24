@@ -72,7 +72,6 @@ public class MainFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -80,6 +79,7 @@ public class MainFragment extends Fragment {
 
         ChatApplication app = (ChatApplication) getActivity().getApplication();
         mSocket = app.getSocket();
+
         mSocket.on(Socket.EVENT_CONNECT,onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
@@ -100,8 +100,6 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

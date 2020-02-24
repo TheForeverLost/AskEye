@@ -19,4 +19,8 @@ public class ChatApplication extends Application {
     public Socket getSocket() {
         return mSocket;
     }
+    public Socket disconnect() {
+        mSocket.disconnect();
+        return mSocket;
+    }
 }

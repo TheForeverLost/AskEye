@@ -31,6 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     private Socket mSocket;
 
     @Override
+    public void onBackPressed(){
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

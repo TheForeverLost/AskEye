@@ -19,6 +19,7 @@ package org.tensorflow.lite.examples.classification;
 import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -38,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Size;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -49,6 +51,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import io.socket.client.Socket;
 import java.nio.ByteBuffer;
 import java.util.List;
 import org.tensorflow.lite.examples.classification.env.ImageUtils;
@@ -103,12 +106,22 @@ public abstract class CameraActivity extends AppCompatActivity
   private int numThreads = -1;
 
   @Override
+  public void onBackPressed(){
+    ChatApplication app = (ChatApplication) getApplication();
+    Socket mSocket = app.getSocket();
+    mSocket.disconnect();
+    mSocket.connect();
+    finish();
+  }
+
+  @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     setContentView(R.layout.tfe_ic_activity_camera);
+
 
     if (hasPermission()) {
       setFragment();
