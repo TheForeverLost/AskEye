@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/maroon">
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="275dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/nopath___copy"
+        tools:srcCompat="?android:attr/colorPrimaryDark" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="135dp"
+        android:src="@drawable/askeye"
+        tools:srcCompat="?android:attr/colorPrimaryDark" />
+
+    <fragment
+        android:id="@+id/fragment"
+        class="org.tensorflow.lite.examples.classification.MainFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="354dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="0dp" />
+
+</RelativeLayout>
