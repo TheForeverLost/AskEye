@@ -15,6 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,10 +31,10 @@ import io.socket.emitter.Emitter;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mUsernameView;
-
+    private GoogleSignInClient mGoogleSignInClient;
     private String mUsername;
     private String mRoom;
-
+    private int RC_SIGN_IN = 1;
     private Socket mSocket;
 
     @Override
@@ -40,12 +47,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         ChatApplication app =  (ChatApplication) this.getApplication();
         mSocket = app.getSocket();
         mSocket.connect();
         Log.i("Info", "Oncreate");
         // Set up the login form.
+        mUsername = "Android";
         mUsernameView = (EditText) findViewById(R.id.username_input);
         mUsernameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -105,7 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         Log.i("attempt login", ""+mSocket.connected());
 
-        mUsername = "Android";
         mRoom = username;
 
         // perform the user login attempt.
@@ -121,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void URLlogin(Uri link) {
         // Reset errors.
-
-        mUsername = "Android";
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
         mRoom = link.getQueryParameter("user");
         // perform the user login attempt.
         try {
@@ -164,5 +175,50 @@ public class LoginActivity extends AppCompatActivity {
     protected void loginFailure(){
         Toast.makeText(this.getApplicationContext(),
                 "Login Error", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+    }
+
+    public void updateUI(GoogleSignInAccount googleSignInAccount){
+        Log.i("Account", "updateUI: "+googleSignInAccount);
+        if (googleSignInAccount != null) {
+            mUsername = googleSignInAccount.getDisplayName();
+            Log.i("Success", "updateUI: "+mUsername);
+        }else{
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Failed sign in", "signInResult:failed code=" + e.getStatusCode());
+
+        }
     }
 }

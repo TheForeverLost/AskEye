@@ -268,16 +268,17 @@ public class MainFragment extends Fragment {
 
     private void startSignIn() {
         mUsername = null;
-        Intent intent2 = new Intent(getActivity(), LoginActivity.class);
-        try {
-            Intent intent = getActivity().getIntent();
-            String action = intent.getAction();
-            Uri data = intent.getData();
-            intent2.setData(data);
-        }catch(Exception e){
-            Log.i("opened by app", "appopen" );
-        }
-        startActivity(intent2);
+//        Intent intent2 = new Intent(getActivity(), LoginActivity.class);
+//        try {
+//            Intent intent = getActivity().getIntent();
+//            String action = intent.getAction();
+//            Uri data = intent.getData();
+//            intent2.setData(data);
+//        }catch(Exception e){
+//            Log.i("opened by app", "appopen" );
+//        }
+//        startActivity(intent2);
+        getActivity().finish();
     }
 
     private void leave() {

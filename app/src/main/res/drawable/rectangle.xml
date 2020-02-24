@@ -9,10 +9,5 @@
         android:left="2dp"
         android:right="2dp"
         android:top="2dp" />
-    <gradient
-        android:startColor="#AADDFF"
-        android:endColor="#BBEEBB"
-        android:type="linear"
-        ></gradient>
     <corners android:radius="@dimen/spacing"/>
 </shape>
