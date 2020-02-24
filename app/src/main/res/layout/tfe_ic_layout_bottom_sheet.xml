@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/appbg"
+    android:background="@android:color/background_dark"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="8dp"
@@ -147,7 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/chatbackground"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="4dp">

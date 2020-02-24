@@ -139,8 +139,7 @@ public class MainFragment extends Fragment {
                 if (id == R.id.send || id == EditorInfo.IME_NULL) {
                     attemptSend();
                     return true;
-                }
-                return false;
+                }return false;
             }
         });
         mInputMessageView.addTextChangedListener(new TextWatcher() {

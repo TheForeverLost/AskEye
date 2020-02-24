@@ -8,8 +8,6 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:background="@drawable/appbg"
-        android:backgroundTint="#111111"
-        android:backgroundTintMode="add"
         tools:context="org.tensorflow.lite.examples.classification.LoginActivity">
 
     <LinearLayout
@@ -17,6 +15,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ae_logo"
+                android:padding="10dp"/>
+        </androidx.appcompat.widget.Toolbar>
 
         <EditText
                 android:id="@+id/username_input"
@@ -29,6 +39,7 @@
                 android:inputType="textPersonName"
                 android:maxLength="14"
                 android:maxLines="1"
+
                 android:textSize="20dp"
                 android:singleLine="true"/>
         <Button
