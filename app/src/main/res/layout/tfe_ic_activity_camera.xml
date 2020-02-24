@@ -17,7 +17,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000">
+    android:background="#000000"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,5 +48,6 @@
 
     <include
         android:id="@+id/bottom_sheet_layout"
-        layout="@layout/tfe_ic_layout_bottom_sheet" />
+        layout="@layout/tfe_ic_layout_bottom_sheet"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

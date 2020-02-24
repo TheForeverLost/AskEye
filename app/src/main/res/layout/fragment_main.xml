@@ -4,8 +4,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@android:color/white"
+        android:background="@drawable/chatbackground"
         tools:context=".MainFragment">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/spacing">
+
+        <TextView
+            android:id="@+id/heading"
+            style="?android:textAppearanceSmall"
+            android:textColor="?android:textColorSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/message_welcome"
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messages"
