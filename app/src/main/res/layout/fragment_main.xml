@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingRight="10dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -62,10 +62,16 @@
         <ImageButton
                 android:id="@+id/send_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@android:drawable/ic_menu_send"
+                android:background = "?selectableItemBackground"
                 android:contentDescription="@string/action_send"/>
-
+        <ImageView
+            android:id = "@+id/speak"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:background = "?selectableItemBackground"
+            android:src = "@android:drawable/ic_btn_speak_now"/>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package org.tensorflow.lite.examples.classification;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 break;
             case Message.TYPE_ACTION:
                 layout = R.layout.item_action;
+                Log.i("Typing", "Typing");
                 break;
         }
         View v = LayoutInflater
@@ -85,6 +87,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 hash = username.codePointAt(i) + (hash << 5) - hash;
             }
             int index = Math.abs(hash % mUsernameColors.length);
+            index =  mUsernameColors.length -1  - index;
             return mUsernameColors[index];
         }
     }

@@ -1,6 +1,7 @@
 package org.tensorflow.lite.examples.classification;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +35,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+
+import android.speech.RecognizerIntent;
+
+import static android.app.Activity.RESULT_OK;
 
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
@@ -52,9 +59,9 @@ public class MainFragment extends Fragment {
     private Handler mTypingHandler = new Handler();
     private String mUsername;
     private Socket mSocket;
-
+    private ImageView mSpeak;
     private Boolean isConnected = true;
-
+    private final int REQ_CODE = 100;
     public MainFragment() {
         super();
     }
@@ -140,6 +147,24 @@ public class MainFragment extends Fragment {
                 }return false;
             }
         });
+        mSpeak = (ImageView) view.findViewById(R.id.speak);
+        mSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Need to speak");
+                try {
+                    startActivityForResult(intent, REQ_CODE);
+                } catch (ActivityNotFoundException a) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Sorry your device not supported",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         mInputMessageView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -178,7 +203,15 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (Activity.RESULT_OK != resultCode) {
+        if(requestCode == REQ_CODE){
+            if (resultCode == RESULT_OK && null != data) {
+                ArrayList result = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                mSocket.emit("new message",result.get(0));
+                return;
+            }
+        }
+        if (RESULT_OK != resultCode) {
             getActivity().finish();
             return;
         }
