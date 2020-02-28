@@ -541,16 +541,18 @@ public abstract class CameraActivity extends AppCompatActivity
     if (results != null && results.size() >= 3) {
       Recognition recognition = results.get(0);
       if (recognition != null) {
-        if (recognition.getTitle() != null && recognition.getTitle() != Prevrec && recognition.getConfidence() > 0.5) {
+        if (recognition.getTitle() != null && recognition.getTitle() != Prevrec) {
           recognitionTextView.setText(recognition.getTitle());
           Prevrec = recognition.getTitle();
           ChatApplication app = (ChatApplication) getApplication();
           Socket mSocket = app.getSocket();
-          t1.speak(recognition.getTitle(),TextToSpeech.QUEUE_FLUSH,null,"hey");
-          mSocket.emit("word detected" , recognition.getTitle());
-          if (recognition.getConfidence() != null)
-            recognitionValueTextView.setText(
-                    String.format("%.2f", (100 * recognition.getConfidence())) + "%");
+          if(recognition.getTitle() == "idle"){
+            t1.speak(recognition.getTitle(),TextToSpeech.QUEUE_FLUSH,null,"hey");
+            mSocket.emit("word detected" , recognition.getTitle());
+            if (recognition.getConfidence() != null)
+              recognitionValueTextView.setText(
+                      String.format("%.2f", (100 * recognition.getConfidence())) + "%");
+          }
         }
       }
 
