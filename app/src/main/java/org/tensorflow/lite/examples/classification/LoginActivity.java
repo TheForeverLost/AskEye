@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
         mSocket.off("loginfailed",onLoginFailed);
         mSocket.off("login", onLogin);
+        finishAndRemoveTask();
     }
 
     /**
@@ -179,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this,ClassifierActivity.class);
         intent.putExtra("username", mUsername);
         intent.putExtra("numUsers", numUsers);
-        setResult(RESULT_OK);
+
         startActivity(intent);
     }
 

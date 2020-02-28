@@ -118,7 +118,7 @@ public class MainFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        mSocket.disconnect();
+        mSocket.emit("leave");
 
         mSocket.off(Socket.EVENT_CONNECT, onConnect);
         mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
@@ -127,6 +127,7 @@ public class MainFragment extends Fragment {
         mSocket.off("new message", onNewMessage);
         mSocket.off("user joined", onUserJoined);
         mSocket.off("user left", onUserLeft);
+        getActivity().finishAndRemoveTask();
     }
 
     @Override
@@ -311,12 +312,12 @@ public class MainFragment extends Fragment {
 //            Log.i("opened by app", "appopen" );
 //        }
 //        startActivity(intent2);
-        getActivity().finish();
+        getActivity().finishAndRemoveTask();
     }
 
     private void leave() {
         mUsername = null;
-        mSocket.disconnect();
+        mSocket.emit("leave");
         mSocket.connect();
         startSignIn();
     }
@@ -448,20 +449,21 @@ public class MainFragment extends Fragment {
     private Emitter.Listener onTyping = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        Log.e(TAG, e.getMessage());
-                        return;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject) args[0];
+                        String username;
+                        try {
+                            username = data.getString("username");
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage());
+                            return;
+                        }
+                        addTyping(username);
                     }
-                    addTyping(username);
-                }
-            });
+                });
+
         }
     };
 

@@ -38,6 +38,8 @@ import android.os.Trace;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.speech.tts.TextToSpeech;
 import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -54,6 +56,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import io.socket.client.Socket;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Locale;
+
 import org.tensorflow.lite.examples.classification.env.ImageUtils;
 import org.tensorflow.lite.examples.classification.env.Logger;
 import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
@@ -100,18 +104,17 @@ public abstract class CameraActivity extends AppCompatActivity
   private Spinner modelSpinner;
   private Spinner deviceSpinner;
   private TextView threadsTextView;
-
+  private String Prevrec;
   private Model model = Model.QUANTIZED;
   private Device device = Device.CPU;
   private int numThreads = -1;
-
+  private TextToSpeech t1;
   @Override
   public void onBackPressed(){
     ChatApplication app = (ChatApplication) getApplication();
     Socket mSocket = app.getSocket();
-    mSocket.disconnect();
     mSocket.connect();
-    finish();
+    finishAndRemoveTask();
   }
 
   @Override
@@ -121,8 +124,15 @@ public abstract class CameraActivity extends AppCompatActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     setContentView(R.layout.tfe_ic_activity_camera);
-
-
+    Prevrec = "";
+    t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+      @Override
+      public void onInit(int status) {
+        if(status != TextToSpeech.ERROR) {
+          t1.setLanguage(Locale.UK);
+        }
+      }
+    });
     if (hasPermission()) {
       setFragment();
     } else {
@@ -531,27 +541,20 @@ public abstract class CameraActivity extends AppCompatActivity
     if (results != null && results.size() >= 3) {
       Recognition recognition = results.get(0);
       if (recognition != null) {
-        if (recognition.getTitle() != null) recognitionTextView.setText(recognition.getTitle());
-        if (recognition.getConfidence() != null)
-          recognitionValueTextView.setText(
-              String.format("%.2f", (100 * recognition.getConfidence())) + "%");
+        if (recognition.getTitle() != null && recognition.getTitle() != Prevrec && recognition.getConfidence() > 0.5) {
+          recognitionTextView.setText(recognition.getTitle());
+          Prevrec = recognition.getTitle();
+          ChatApplication app = (ChatApplication) getApplication();
+          Socket mSocket = app.getSocket();
+          t1.speak(recognition.getTitle(),TextToSpeech.QUEUE_FLUSH,null,"hey");
+          mSocket.emit("word detected" , recognition.getTitle());
+          if (recognition.getConfidence() != null)
+            recognitionValueTextView.setText(
+                    String.format("%.2f", (100 * recognition.getConfidence())) + "%");
+        }
       }
 
-      Recognition recognition1 = results.get(1);
-      if (recognition1 != null) {
-        if (recognition1.getTitle() != null) recognition1TextView.setText(recognition1.getTitle());
-        if (recognition1.getConfidence() != null)
-          recognition1ValueTextView.setText(
-              String.format("%.2f", (100 * recognition1.getConfidence())) + "%");
-      }
 
-      Recognition recognition2 = results.get(2);
-      if (recognition2 != null) {
-        if (recognition2.getTitle() != null) recognition2TextView.setText(recognition2.getTitle());
-        if (recognition2.getConfidence() != null)
-          recognition2ValueTextView.setText(
-              String.format("%.2f", (100 * recognition2.getConfidence())) + "%");
-      }
     }
   }
 
