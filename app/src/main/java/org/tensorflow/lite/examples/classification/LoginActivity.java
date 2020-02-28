@@ -86,12 +86,13 @@ public class LoginActivity extends AppCompatActivity {
             Log.i("opened by app", "appopen" );
         }
         mSocket.on("login", onLogin);
+        mSocket.on("loginfailed",onLoginFailed);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        mSocket.off("loginfailed",onLoginFailed);
         mSocket.off("login", onLogin);
     }
 
@@ -102,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void attemptLogin() {
         // Reset errors.
+        mSocket.connect();
         mUsernameView.setError(null);
 
         // Store values at the time of the login attempt.
@@ -160,9 +162,18 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             loginSuccess(numUsers);
+            Log.i("Login Success", "lesgo");
+        }
 
+    };
+    private Emitter.Listener onLoginFailed = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            loginFailure();
+            Log.i("Login Failed", "Error");
         }
     };
+
 
     protected void loginSuccess(int numUsers){
         Intent intent = new Intent(this,ClassifierActivity.class);
